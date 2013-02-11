@@ -38,6 +38,12 @@ P_SPACER        = 6             # Spacing between panel objects
 P_HEIGHT        = 24            # Panel height
 
 #------------------------------------------------------------------------------
+# Panel Tasks Options
+#------------------------------------------------------------------------------
+T_FILL		= 0		# Tasks fill panel width: 0 = No, 1 = Yes
+T_WIDTH 	= 180		# Task width
+
+#------------------------------------------------------------------------------
 # Icon Size Options: Measured in pixels
 #------------------------------------------------------------------------------
 I_HEIGHT        = 16            # Panel application icon height
@@ -132,7 +138,7 @@ ABOVE           = 1             # Panel is always above other apps
 APPICONS        = 1             # Show application icons
 AUTOHIDE        = 0             # Autohide uses the CLOCK_DELAY timer above
 SHADOWS         = 0             # Show text shadows
-SHOWLINES       = 0             # Show object seperation lines
+SHOWLINES       = 1             # Show object seperation lines
 SHOWBORDER      = 0             # Show a border around the panel
 
 #------------------------------------------------------------------------------

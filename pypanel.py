@@ -662,9 +662,13 @@ class PyPanel(object):
         for section in panel["sections"]:
             if panel[section].id == "tasks" and TASKS:
                 if not visible:
-                    curr_x += space
+                    curr_x += space			
                 else:
-                    limit = space/float(len(visible)) - P_SPACER*2 
+                    final_x = curr_x+space
+                    if T_FILL:
+                        limit = space/float(len(visible)) - P_SPACER*2
+                    else:
+                        limit = T_WIDTH - P_SPACER*2 if float(len(visible)) * (T_WIDTH + P_SPACER*2) < space else space/float(len(visible)) - P_SPACER*2
                     if APPICONS:
                         limit -= I_WIDTH + P_SPACER 
                     if limit < 1:
@@ -680,6 +684,7 @@ class PyPanel(object):
                         t.x2 = curr_x
                         if v < len(visible) and SHOWLINES:
                             win.poly_segment(self.lgc, [(curr_x, 0, curr_x, P_HEIGHT)])
+                    curr_x = final_x
                 if SHOWLINES and not panel[section].last:
                     win.poly_segment(self.lgc, [(curr_x, 0, curr_x, P_HEIGHT)])
             elif panel[section].id == "clock":
