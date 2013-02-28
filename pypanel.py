@@ -473,7 +473,7 @@ class PyPanel(object):
                 self.sendEvent(self.window, self._STATE, [0, self._ABOVE])
         else:
             if P_LOCATION == 0:
-                y = 0;
+                y = 0
             else:
                 y = self.screen.height_in_pixels - HIDDEN_SIZE
 
