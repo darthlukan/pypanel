@@ -41,7 +41,7 @@ P_HEIGHT        = 24            # Panel height
 # Panel Tasks Options
 #------------------------------------------------------------------------------
 T_FILL		= 0		# Tasks fill panel width: 0 = No, 1 = Yes
-T_WIDTH 	= 180   # Task width
+T_WIDTH 	= 180		# Task width
 
 #------------------------------------------------------------------------------
 # Icon Size Options: Measured in pixels
@@ -59,6 +59,7 @@ TRAY_I_WIDTH    = 24            # System tray icon width  (usually 16 or 24)
 # Panel Clock Format: 'man strftime' for detailed formatting options and help
 #------------------------------------------------------------------------------
 CLOCK_FORMAT    = "%Y-%m-%d %H:%M"    # Ex: 2004-09-25 17:45 
+TIME_BEATS      = 0   # Set to 1 to show time in Swatch Internet Time
 
 #------------------------------------------------------------------------------
 # Clock Delay: Seconds between each clock update during periods of inactivity

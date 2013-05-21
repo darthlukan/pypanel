@@ -17,7 +17,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 """
-
 #----------------------------------------------------------------------------                
 class Obj(object):
 #---------------------------------------------------------------------------- 
@@ -43,6 +42,7 @@ class PyPanel(object):
         self.hidden  = 0                         # Panel hidden/minimized
         self.focus   = 0                         # Currently focused window
         self.rpm     = None                      # Root pixmap ID
+        self.beats   = bool(TIME_BEATS)
                 
         global P_HEIGHT, P_WIDTH, P_LOCATION
         
@@ -473,7 +473,7 @@ class PyPanel(object):
                 self.sendEvent(self.window, self._STATE, [0, self._ABOVE])
         else:
             if P_LOCATION == 0:
-                y = 0;
+                y = 0
             else:
                 y = self.screen.height_in_pixels - HIDDEN_SIZE
 
@@ -604,7 +604,28 @@ class PyPanel(object):
             b = int("0x"+BG_COLOR[6:8],0)
             ppshade(win.id, rpm, P_START, P_LOCATION, P_WIDTH, P_HEIGHT,
                 r, g, b, SHADE)
-                                         
+
+    def getTimeInBeats(self):
+        def _cleanupBeats(rawBeats):
+            if rawBeats > 1000:
+                return rawBeats - 1000
+            if rawBeats < 0:
+                return rawBeats + 1000
+            return rawBeats
+        def _fmt(clnBeats):
+            return "@%.2f .beats"%(clnBeats)
+        def _cleanBeatsCalculation(hour, minute, second):
+            return _fmt(_cleanupBeats(sum([hour * 3600,
+                                           minute * 60,
+                                           second, 
+                                           time.timezone]) / 86.4))
+        return _cleanBeatsCalculation(*time.localtime()[3:6])
+
+    def getClockData(self):
+        if self.beats:
+            return self.getTimeInBeats()
+        return time.strftime(CLOCK_FORMAT, time.localtime())
+
     #---------------------------------------
     def updatePanel(self, root, win, panel):
     #---------------------------------------
@@ -621,7 +642,7 @@ class PyPanel(object):
                 
         if CLOCK:
             clock = panel[CLOCK]
-            clock.name  = time.strftime(CLOCK_FORMAT, time.localtime())
+            clock.name  = self.getClockData()
             clock.width = ppfontsize(clock.name) + 2
             space -= clock.width + P_SPACER*2
         if DESKTOP:
@@ -884,7 +905,7 @@ class PyPanel(object):
                 if AUTOHIDE and not self.hidden:
                     self.toggleHidden()
             if CLOCK:
-                now = time.strftime(CLOCK_FORMAT, time.localtime())
+                now = self.getClockData()
                 if clock.name != now:
                     clock.name = now
                     self.clearPanel(clock.x1+1, 0, clock.x2-(clock.x1+1), P_HEIGHT)
