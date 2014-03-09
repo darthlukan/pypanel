@@ -1,1 +1,2 @@
-Xlib>=0.15
+Xlib
+distutils>=2.7.6
