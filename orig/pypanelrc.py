@@ -1,3 +1,4 @@
+import os
 #------------------------------------------------------------------------------
 #
 #                         PyPanel v2.4 Configuration
@@ -12,10 +13,10 @@ VERSION         = 2.4           # Config file version
 # Colors: Format is hex triplet - 0xrrggbb
 #------------------------------------------------------------------------------
 BG_COLOR        = "0xd6d6d6"    # Panel background and tinting color
-TASK_COLOR      = "0x000000"    # Normal task name color 
+TASK_COLOR      = "0x000000"    # Normal task name color
 FOCUSED_COLOR   = "0x1826de"    # Focused task name color
-SHADED_COLOR    = "0x808080"    # Shaded task name color 
-MINIMIZED_COLOR = "0x808080"    # Minimized task name color 
+SHADED_COLOR    = "0x808080"    # Shaded task name color
+MINIMIZED_COLOR = "0x808080"    # Minimized task name color
 DESKTOP_COLOR   = "0x000000"    # Desktop name color
 CLOCK_COLOR     = "0x000000"    # Clock text color
 LINE_COLOR      = "0x606060"    # Vertical line color
@@ -24,7 +25,7 @@ LINE_COLOR      = "0x606060"    # Vertical line color
 TASK_SHADOW_COLOR      = "0xffffff"
 FOCUSED_SHADOW_COLOR   = "0xffffff"
 SHADED_SHADOW_COLOR    = "0xffffff"
-MINIMIZED_SHADOW_COLOR = "0xffffff" 
+MINIMIZED_SHADOW_COLOR = "0xffffff"
 DESKTOP_SHADOW_COLOR   = "0xffffff"
 CLOCK_SHADOW_COLOR     = "0xffffff"
 
@@ -47,18 +48,18 @@ T_WIDTH 	= 180		# Task width
 # Icon Size Options: Measured in pixels
 #------------------------------------------------------------------------------
 I_HEIGHT        = 16            # Panel application icon height
-I_WIDTH         = 16            # Panel application icon Width 
+I_WIDTH         = 16            # Panel application icon Width
 APPL_I_HEIGHT   = 24            # Application launcher icon height
 APPL_I_WIDTH    = 24            # Application launcher icon width
 TRAY_I_HEIGHT   = 24            # System tray icon height (usually 16 or 24)
 TRAY_I_WIDTH    = 24            # System tray icon width  (usually 16 or 24)
                                 # If TRAY_I_WIDTH is set to 0, then the
                                 # width specified by the tray app will be used
-                                
+
 #------------------------------------------------------------------------------
 # Panel Clock Format: 'man strftime' for detailed formatting options and help
 #------------------------------------------------------------------------------
-CLOCK_FORMAT    = "%Y-%m-%d %H:%M"    # Ex: 2004-09-25 17:45 
+CLOCK_FORMAT    = "%Y-%m-%d %H:%M"    # Ex: 2004-09-25 17:45
 TIME_BEATS      = 0   # Set to 1 to show time in Swatch Internet Time
 
 #------------------------------------------------------------------------------
@@ -71,17 +72,17 @@ CLOCK_DELAY     = 20
 # The application name is its WM_CLASS name, use 'xprop' to find WM_CLASS
 # Ex: ["xmms", "xine", "gDesklets"]
 #------------------------------------------------------------------------------
-HIDE_LIST       = []            
-                   
+HIDE_LIST       = []
+
 #------------------------------------------------------------------------------
 # Hidden Panel Size: Size of the panel when it's hidden/minimized
 #------------------------------------------------------------------------------
 HIDDEN_SIZE     = 2
 
 #------------------------------------------------------------------------------
-# Panel Text Font: This option takes either a traditional or Xft font string 
+# Panel Text Font: This option takes either a traditional or Xft font string
 # Ex: "-schumacher-clean-medium-r-normal-*-12-*-*-*-*-*-*-*"
-#     "aquafont-8" 
+#     "aquafont-8"
 #------------------------------------------------------------------------------
 FONT            = "bitstream vera sans-8"
 
@@ -114,16 +115,16 @@ ICON_LIST       = {
                    "default" : "",
                    "example" : "/usr/share/imlib2/data/images/audio.png",
                   }
-                  
+
 #------------------------------------------------------------------------------
 # Application Launch List: Ordered list of icons and applications for the
 #                          application launcher.
-# 
+#
 # Add entries using the following format -
 #     ("<executable>", "<full path to icon>")
 #------------------------------------------------------------------------------
 LAUNCH_LIST     = [
-                   ("gimp-2.2", "/usr/share/imlib2/data/images/paper.png"), 
+                   ("gimp-2.2", "/usr/share/imlib2/data/images/paper.png"),
                   ]
 
 #------------------------------------------------------------------------------
@@ -160,7 +161,7 @@ DESKTOP_NAMES   = []
 # assigning it a section number or disabled by assigning it 0:
 #------------------------------------------------------------------------------
 DESKTOP         = 1             # Desktop name section
-TASKS           = 2             # Task names section 
+TASKS           = 2             # Task names section
 TRAY            = 3             # System tray section
 CLOCK           = 4             # Clock section
 LAUNCHER        = 0             # Application launcher section
@@ -168,15 +169,15 @@ LAUNCHER        = 0             # Application launcher section
 #------------------------------------------------------------------------------
 #                       Button Event Function Definitions
 #------------------------------------------------------------------------------
-# Left click   - button 1 
+# Left click   - button 1
 # Middle click - button 2
 # Right click  - button 3
 # Wheel up     - button 4
-# Wheel down   - button 5 
+# Wheel down   - button 5
 #
 # changeDesktop(x)
 # - Change Desktop: Increase or decrease the current desktop by 'x' amount
-# 
+#
 # toggleShade(task)
 # - Shade or Unshade an application
 #
@@ -187,7 +188,7 @@ LAUNCHER        = 0             # Application launcher section
 # - Minimize or Unminimize an application and optionally raise it
 #
 # taskRaise(task, focus=1)
-# - Raise an application to the top of the window list and optionally focus it 
+# - Raise an application to the top of the window list and optionally focus it
 #
 # taskLower(task, focus=0)
 # - Lower an app to the bottom of the window list and optionally focus it
@@ -203,7 +204,7 @@ LAUNCHER        = 0             # Application launcher section
 def desktopButtonEvent(pp, button):
 #----------------------------------
     """ Button event handler for the panel's desktop object """
-        
+
     if button == 1:
         pp.changeDesktop(-1)
     elif button == 2:
@@ -214,28 +215,28 @@ def desktopButtonEvent(pp, button):
         pp.changeDesktop(1)
     elif button == 5:
         pp.changeDesktop(-1)
-        
+
 #--------------------------------
 def clockButtonEvent(pp, button):
 #--------------------------------
     """ Button event handler for the panel's clock object """
-    
+
     if button == 1:
         os.system("xclock &")
     elif button == 2:
         pass
     elif button == 3:
-        pp.toggleHidden()  
+        pp.toggleHidden()
     elif button == 4:
         pp.showDesktop()
     elif button == 5:
         pp.showDesktop()
-        
+
 #--------------------------------
 def panelButtonEvent(pp, button):
 #--------------------------------
     """ Button event handler for the panel with no active tasks """
-    
+
     if button == 1:
         pass
     elif button == 2:
@@ -246,12 +247,12 @@ def panelButtonEvent(pp, button):
         pass
     elif button == 5:
         pass
-        
+
 #-------------------------------------
 def taskButtonEvent(pp, button, task):
 #-------------------------------------
     """ Button event handler for the panel's tasks """
-    
+
     if button == 1:
         pp.taskFocus(task)
     elif button == 2:

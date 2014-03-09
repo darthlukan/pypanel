@@ -1,4 +1,6 @@
-import fileinput, os, sys
+import os
+import sys
+import fileinput
 from distutils.core import Extension, setup
 from distutils import sysconfig
 
@@ -6,23 +8,23 @@ from distutils import sysconfig
 configs = ["/usr/bin/freetype-config", "/usr/bin/imlib2-config"]
 
 # Adjust or add any additional include directories here -
-idirs   = ["/usr/X11R6/include"]
+idirs = ["/usr/X11R6/include"]
 
 # Add any additional library directories here -
-ldirs   = []
+ldirs = []
 
 # Add any additional compile options here -
-cargs   = ["-Wall"]
+cargs = ["-Wall"]
 
 # Full path to libImlib2 shared library
-imlib2  = "/usr/lib/libImlib2.so.1"
+imlib2 = "/usr/lib/libImlib2.so.1"
 
 #------------------------------------------------------------------------------
-# The rest of this script should not need to be modified! 
+# The rest of this script should not need to be modified!
 #------------------------------------------------------------------------------
-libs  = [] # libraries (listed without -l)
-largs = [] # extra link arguments
-defs  = [] # define macros
+libs = []  # libraries (listed without -l)
+largs = []  # extra link arguments
+defs = []  # define macros
 files = ["COPYING", "README", "ppicon.png", "pypanelrc"]
 install_dir = sysconfig.get_python_lib() + "/pypanel"
 
@@ -33,26 +35,26 @@ except:
     print "\nPyPanel requires the Python X library -"
     print "http://sourceforge.net/projects/python-xlib/"
     sys.exit()
-   
+
 # Parse the build options
 for config in configs:
     package = os.path.split(config)[1]
-    
+
     if os.path.isfile(config):
-        for cflag in os.popen("%s --cflags" % config).read().strip().split(): 
+        for cflag in os.popen("%s --cflags" % config).read().strip().split():
             flag = cflag[:2]
-            opt  = cflag[2:]    
-            
+            opt = cflag[2:]
+
             if flag == "-I" and opt not in idirs:
                 idirs.append(opt)
             else:
                 if cflag not in cargs:
-                    cargs.append(cflag)    
-                
+                    cargs.append(cflag)
+
         for lib in os.popen("%s --libs" % config).read().strip().split():
             flag = lib[:2]
-            opt  = lib[2:]
-            
+            opt = lib[2:]
+
             if flag == "-L" and opt not in ldirs:
                 ldirs.append(opt)
             elif flag == "-l":
@@ -61,12 +63,12 @@ for config in configs:
             else:
                 if lib not in largs:
                     largs.append(lib)
-                
+
         if package == "freetype-config":
             defs.append(("HAVE_XFT", 1))
             if "Xft" not in libs:
                 libs.append("Xft")
-                
+
         if package == "imlib2-config":
             # Add the workaround for Imlib2 version 1.2.x and up -
             # Python dlopens libImlib2 with RTLD_LOCAL by default.  To avoid
@@ -74,7 +76,7 @@ for config in configs:
             version = os.popen("%s --version" % config).read().strip()
             if float(version[:3]) >= 1.2:
                 defs.append(("IMLIB2_FIX", 1))
-            
+
     else:
         if package == "imlib2-config":
             print "\nPyPanel requires the Imlib2 library -"
@@ -87,37 +89,37 @@ if len(sys.argv) > 1 and sys.argv[1] != "sdist":
         if fileinput.isfirstline():
             print "#!%s -OO" % sys.executable
         else:
-            print line,  
-            
+            print line,
+
     if ("IMLIB2_FIX", 1) in defs:
         for line in fileinput.input(["ppmodule.c"], inplace=1):
             if "handle = dlopen" in line:
                 print '    handle = dlopen("%s", RTLD_NOW|RTLD_GLOBAL);' % imlib2
             else:
-                print line,   
-                
-                   
-# Distutils config
-module = Extension("ppmodule",
-                   sources            = ["ppmodule.c"],
-                   include_dirs       = idirs,
-                   library_dirs       = ldirs,
-                   libraries          = libs,  
-                   extra_compile_args = cargs,
-                   extra_link_args    = largs,
-                   define_macros      = defs,                    
-                  )  
+                print line,
 
-setup(name             = "PyPanel",
-      author           = "Jon Gelo",
-      author_email     = "ziljian@users.sourceforge.net",
-      version          = "2.4",
-      license          = "GPL",
-      platforms        = "POSIX",
-      description      = "Lightweight panel/taskbar for X11 Window Managers",
-      long_description = "See README for more information",
-      url              = "http://pypanel.sourceforge.net",
-      data_files       = [(install_dir, files)],
-      scripts          = ["pypanel"],
-      ext_modules      = [module]
-     )
+
+            # Distutils config
+module = Extension("ppmodule",
+                   sources=["ppmodule.c"],
+                   include_dirs=idirs,
+                   library_dirs=ldirs,
+                   libraries=libs,
+                   extra_compile_args=cargs,
+                   extra_link_args=largs,
+                   define_macros=defs,
+)
+
+setup(name="PyPanel",
+      author="Jon Gelo",
+      author_email="ziljian@users.sourceforge.net",
+      version="2.4",
+      license="GPL",
+      platforms="POSIX",
+      description="Lightweight panel/taskbar for X11 Window Managers",
+      long_description="See README for more information",
+      url="http://pypanel.sourceforge.net",
+      data_files=[(install_dir, files)],
+      scripts=["pypanel"],
+      ext_modules=[module]
+)

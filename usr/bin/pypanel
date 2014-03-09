@@ -1,0 +1,2 @@
+#!/bin/bash
+python2 -OO /usr/lib/python2.7/site-packages/pypanel/pypanel.py
